@@ -1,3 +1,4 @@
+import { ParticipationResult } from '../enums/participation-result.enum.js'
 import { Campaign } from '../models/Campaign.js'
 import * as campaignService from '../services/campaign.service.js'
 
@@ -29,15 +30,32 @@ export async function participateCampaign(req: any, res: any ) {
   try {
     const { campaignId, postLink } = req.body
     const userId  = req.user.id.toString()
-    const participation = await campaignService.participateInCampaign({
+    const result = await campaignService.participateInCampaign({
       campaignId,
       userId,
       postLink
     })
 
-    return res.status(201).json({ participation })
+    switch (result) {
+      case ParticipationResult.CREATED:
+        return res
+          .status(201)
+          .json({ status: result, message: 'Participación registrada correctamente.' })
+
+      case ParticipationResult.ALREADY_PARTICIPATED:
+        return res
+          .status(409)
+          .json({ status: result, message: 'Ya has participado en esta campaña.' })
+
+      case ParticipationResult.ERROR:
+      default:
+        return res
+          .status(500)
+          .json({ status: result, message: 'Ocurrió un error interno. Intenta de nuevo.' })
+    }
   } catch (err: any) {
-    console.error(err)
-    return res.status(500).json({ error: err.message })
+    return res
+      .status(500)
+      .json({ status: 'ERROR', message: 'Error inesperado.' })
   }
 }

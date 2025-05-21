@@ -59,8 +59,8 @@ export async function insertParticipation(data: {
     .single()
 
   if (error) {
-    console.error('Participation Repository Error:', error)
-    throw error
+    throw error.code
   }
-  return inserted
+
+  return inserted!
 }

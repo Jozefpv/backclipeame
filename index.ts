@@ -4,6 +4,7 @@ import cookieParser from 'cookie-parser'
 import authRouter from './routes/auth/auth.js'
 import apiRouter  from './routes/api/api.js'  
 import dashboardRotuer  from './routes/dashboard/dashboard.js'  
+import scrapRouter from './routes/scrap/scrap.js'
 import dotenv from 'dotenv'
 dotenv.config()
 
@@ -20,6 +21,7 @@ app.use(cookieParser())
 app.use('/auth', authRouter)
 app.use('/api',  apiRouter)
 app.use('/dashboard', dashboardRotuer)
+app.use('/scrap', scrapRouter)
 
 const PORT = process.env.PORT || 3001
 app.listen(PORT, () => {

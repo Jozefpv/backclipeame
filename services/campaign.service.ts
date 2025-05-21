@@ -3,6 +3,7 @@ import { CampaignDB } from '../models/db/CampaignDB.js'
 import * as campaignRepo from '../repositories/campaign.repository.js'
 import { Participation } from '../models/Participation.js'
 import { ParticipationDB } from '../models/db/ParticipationDB.js'
+import { ParticipationResult } from '../enums/participation-result.enum.js'
 
 export async function fetchAllCampaigns(): Promise<Campaign[]> {
   const rows: CampaignDB[] = await campaignRepo.findAll() ?? []
@@ -62,12 +63,19 @@ export async function participateInCampaign(params: {
   campaignId: string
   userId: string
   postLink: string
-}): Promise<boolean> {
-  const inserted: ParticipationDB= await campaignRepo.insertParticipation({
-    campaign_id: params.campaignId,
-    user_id:     params.userId,
-    post_link:   params.postLink,
-  })
+}): Promise<ParticipationResult> {
+  try {
+    await campaignRepo.insertParticipation({
+      campaign_id: params.campaignId,
+      user_id:     params.userId,
+      post_link:   params.postLink,
+    })
+    return ParticipationResult.CREATED
 
-  return true
+  } catch (err) {
+    if (err === '23505') {
+      return ParticipationResult.ALREADY_PARTICIPATED
+    }
+    return ParticipationResult.ERROR
+  }
 }

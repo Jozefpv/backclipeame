@@ -13,3 +13,7 @@ router.get('/campaigns/:id', requireAuth, getCampaignsById)
 router.post('/participate', requireUserAuth, participateCampaign)
 
 export default router
+
+
+
+
