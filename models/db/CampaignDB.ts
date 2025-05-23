@@ -1,3 +1,5 @@
+import { CampaignParticipantsDB } from "./CampaingParticipantsDB.js"
+
 export interface CampaignDB {
   id: string
   title: string
@@ -11,7 +13,7 @@ export interface CampaignDB {
   requirements: string | null
   category: number
   files: string[] | null
-  status: number
+  status_id: number
   creation_date: string
   start_date:  string
   end_date:    string
@@ -23,4 +25,6 @@ export interface CampaignDB {
   content_type_name: {name: string}
   content_category_name: {name: string}
   max_payment: number
+  participants: CampaignParticipantsDB[];
+  
 }

@@ -1,8 +1,6 @@
 import { Campaign } from '../models/Campaign.js'
 import { CampaignDB } from '../models/db/CampaignDB.js'
 import * as campaignRepo from '../repositories/campaign.repository.js'
-import { Participation } from '../models/Participation.js'
-import { ParticipationDB } from '../models/db/ParticipationDB.js'
 import { ParticipationResult } from '../enums/participation-result.enum.js'
 
 export async function fetchAllCampaigns(): Promise<Campaign[]> {
@@ -21,19 +19,23 @@ export async function fetchAllCampaigns(): Promise<Campaign[]> {
     requirements: r.requirements ? JSON.parse(r.requirements) : [],
     category:     r.content_category_name.name,
     files:        r.files ?? [],
-    status:       r.status,
+    status:       r.status_id,
     creationDate: new Date(r.creation_date),
     startDate:    new Date(r.start_date),
     endDate:      new Date(r.end_date),
     authorId:     r.author.id,
     authorName:   r.author.name,
     authorAvatar: r.author.avatar_url,
-    maxPayment:   r.max_payment
+    maxPayment:   r.max_payment,
+    participants: (r.participants ?? []).map(p => ({
+      postLink: p.post_link,
+      views:    p.views,
+    })),
   }))
 }
 
 export async function fetchCampaignById(id: string): Promise<Campaign | null> {
-  const row = await campaignRepo.findById(id)
+  const row: CampaignDB = await campaignRepo.findById(id)
   return {
     id:           row.id,
     title:        row.title,
@@ -47,14 +49,18 @@ export async function fetchCampaignById(id: string): Promise<Campaign | null> {
     requirements: row.requirements ? JSON.parse(row.requirements) : [],
     category:     row.content_category_name.name,
     files:        row.files ?? [],
-    status:       row.status,
+    status:       row.status_id,
     creationDate: new Date(row.creation_date),
     startDate:    new Date(row.start_date),
     endDate:      new Date(row.end_date),
     authorId:     row.author.id,
     authorName:   row.author.name,
     authorAvatar: row.author.avatar_url,
-    maxPayment:   row.max_payment
+    maxPayment:   row.max_payment,
+    participants: (row.participants ?? []).map(p => ({
+      postLink: p.post_link,
+      views:    p.views,
+    })),
 
   }
 }

@@ -1,6 +1,8 @@
 import { Router } from 'express'
 import axios from 'axios'
 import supabase from '../../db/db.js'
+import { requireAuth } from '../../middleware/requireAuth.js'
+import { getProfileById } from '../../controllers/auth.controller.js'
 
 const router = Router()
 
@@ -95,5 +97,7 @@ router.post('/login', async (req, res) => {
     res.status(401).json({ error: err.message })
   }
 })
+
+router.get('/profile/:id', requireAuth, getProfileById)
 
 export default router

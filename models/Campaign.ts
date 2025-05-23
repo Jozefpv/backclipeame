@@ -1,3 +1,5 @@
+import { CampaignParticipants } from "./CampaignParticipants.js"
+
 export interface Campaign {
   id: string
   title: string
@@ -19,6 +21,7 @@ export interface Campaign {
   authorName:   string
   authorAvatar: string
   maxPayment: number
+  participants: CampaignParticipants[]
 }
 
 export enum SocialMedia { TikTok='tiktok', YouTube='youtube', Instagram='instagram' }

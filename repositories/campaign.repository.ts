@@ -11,8 +11,14 @@ export async function findAll() {
         avatar_url
       ),
       content_type_name:content_type(name),
-      content_category_name:content_category(name)
+      content_category_name:content_category(name),
+      participants:campaign_participants (
+        post_link,
+        views
+      )
     `)
+    .order('views', { referencedTable: 'campaign_participants', ascending: false })
+    .limit(5,   { referencedTable: 'campaign_participants' })
 
   if (error) {
     console.error('Repository Error:', error)
@@ -32,9 +38,15 @@ export async function findById(id: string) {
         avatar_url
       ),
       content_type_name:content_type(name),
-      content_category_name:content_category(name)
+      content_category_name:content_category(name),
+      participants:campaign_participants (
+        post_link,
+        views
+      )
     `)
     .eq('id', id)
+    .order('views', { referencedTable: 'campaign_participants', ascending: false })
+    .limit(5, { referencedTable: 'campaign_participants' })
     .single()
 
   if (error) {
