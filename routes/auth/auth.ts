@@ -1,10 +1,12 @@
 import { Router } from 'express'
 import axios from 'axios'
 import supabase from '../../db/db.js'
-import { requireAuth } from '../../middleware/requireAuth.js'
-import { getProfileById } from '../../controllers/auth.controller.js'
+import { requireAuth, requireUserAuth } from '../../middleware/requireAuth.js'
+import { changeAvatar, getProfileById, uploadConfig } from '../../controllers/auth.controller.js'
+import multer from 'multer'
 
 const router = Router()
+const upload = multer({ storage: multer.memoryStorage() })
 
 router.get('/google', (req, res) => {
   const params = new URLSearchParams({
@@ -98,6 +100,16 @@ router.post('/login', async (req, res) => {
   }
 })
 
+router.post('/logout', async (req, res) => {
+  res.clearCookie('sb-access-token', { path: '/' });
+  res.json({ success: true });
+});
+
+
 router.get('/profile/:id', requireAuth, getProfileById)
+
+router.post('/profile/avatar', requireUserAuth, upload.single('avatar'), changeAvatar)
+
+router.post('/profile/config', requireUserAuth, uploadConfig)
 
 export default router
