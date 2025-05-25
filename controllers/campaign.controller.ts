@@ -59,3 +59,55 @@ export async function participateCampaign(req: any, res: any ) {
       .json({ status: 'ERROR', message: 'Error inesperado.' })
   }
 }
+
+export async function addCampaign(req: any, res: any) {
+  try {
+        const {
+          title,
+          description,
+          budget,
+          reward,
+          typeId,
+          socialMediaId,
+          startDate,
+          endDate,
+          paid,
+          requirements,
+          categoryId,
+          files,
+          status,
+          creationDate
+        } = req.body
+
+        const profileId = req.user.id
+
+        const imageFile = req.file
+        if (!imageFile) {
+          return res.status(400).json({ error: 'Falta la imagen de la campaña' })
+        }
+        const newCampaign = await campaignService.createCampaign({
+              title,
+              description,
+              budget: Number(budget),
+              reward: Number(reward),
+              typeId,
+              socialMediaId,
+              startDate: new Date(startDate),
+              endDate: new Date(endDate),
+              paid: Number(paid),
+              requirements: JSON.parse(requirements),
+              categoryId,
+              files: JSON.parse(files),
+              status: Number(status),
+              creationDate: new Date(creationDate),
+              authorId: profileId,
+              imageFile
+            })
+
+            return res.status(201).json({ campaign: newCampaign })
+  } catch (err: any) {
+    return res
+      .status(500)
+      .json({ error: 'Error interno al crear campaña', details: err.message });
+  }
+}

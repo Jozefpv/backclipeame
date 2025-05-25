@@ -1,3 +1,5 @@
+import dotenv from 'dotenv'
+dotenv.config()
 import express from 'express'
 import cors from 'cors'
 import cookieParser from 'cookie-parser'
@@ -5,8 +7,6 @@ import authRouter from './routes/auth/auth.js'
 import apiRouter  from './routes/api/api.js'  
 import dashboardRotuer  from './routes/dashboard/dashboard.js'  
 import scrapRouter from './routes/scrap/scrap.js'
-import dotenv from 'dotenv'
-dotenv.config()
 
 const app = express()
 

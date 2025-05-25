@@ -8,10 +8,10 @@ export interface Campaign {
   budget: number
   paid: number
   reward: number
-  type: string
-  socialMedia: string[]
+  typeId: number
+  socialMediaId: number[]
   requirements?: string[]
-  category: string
+  categoryId: number
   files?: string[]
   status: number
   creationDate: Date

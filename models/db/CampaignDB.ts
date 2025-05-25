@@ -8,10 +8,10 @@ export interface CampaignDB {
   budget: number
   paid: number
   reward: number
-  type: string
-  socialmedia: string[]
+  type_id: number
+  socialmedia_id: number[]
   requirements: string | null
-  category: number
+  category_id: number
   files: string[] | null
   status_id: number
   creation_date: string
