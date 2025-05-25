@@ -26,6 +26,20 @@ export async function getCampaignsById(req: any, res: any ) {
   }
 }
 
+export async function getMyCampaignsById(req: any, res: any ) {
+  try {
+    const { id } = req.params
+    const campaigns: Campaign[] = await campaignService.fetchMyCampaignById(id)
+    if (!campaigns) {
+      return res.status(404).json({ error: 'Campaign not found' })
+    }
+    return res.json({ campaigns })
+  } catch (err: any) {
+    console.error('Controller Error:', err)
+    return res.status(500).json({ error: err.message })
+  }
+}
+
 export async function participateCampaign(req: any, res: any ) {
   try {
     const { campaignId, postLink } = req.body

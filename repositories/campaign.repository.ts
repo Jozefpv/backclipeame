@@ -25,7 +25,7 @@ export async function findAll() {
   return data
 }
 
-export async function findById(id: string) {
+export async function findCampaignById(campaignid: string) {
    const { data, error } = await supabase
     .from('campaigns')
     .select(`
@@ -40,7 +40,7 @@ export async function findById(id: string) {
         views
       )
     `)
-    .eq('id', id)
+    .eq('id', campaignid)
     .order('views', { referencedTable: 'campaign_participants', ascending: false })
     .limit(5, { referencedTable: 'campaign_participants' })
     .single()
@@ -49,6 +49,41 @@ export async function findById(id: string) {
     console.error('Repository Error:', error)
     throw error
   }
+  return data
+}
+
+export async function findMyCampaignIds(profileId: string): Promise<string[]> {
+  const { data, error } = await supabase
+    .from('campaign_participants')
+    .select('campaign_id')
+    .eq('profile_id', profileId)
+
+  if (error) throw error
+
+  return data.map(row => row.campaign_id)
+}
+
+export async function findMyCampaignById(profileId: string) {
+  const ids = await findMyCampaignIds(profileId)
+  if (ids.length === 0) return []
+
+  const { data, error } = await supabase
+    .from('campaigns')
+    .select(`
+      *,
+      author:profiles (
+        id,
+        name,
+        avatar_url
+      ),
+      participants:campaign_participants (
+        post_link,
+        views
+      )
+    `)
+    .in('id', ids)
+  
+  if (error) throw error
   return data
 }
 

@@ -34,8 +34,8 @@ export async function fetchAllCampaigns(): Promise<Campaign[]> {
   }))
 }
 
-export async function fetchCampaignById(id: string): Promise<Campaign | null> {
-  const row: CampaignDB = await campaignRepo.findById(id)
+export async function fetchCampaignById(campaignid: string): Promise<Campaign | null> {
+  const row: CampaignDB = await campaignRepo.findCampaignById(campaignid)
   return {
     id:            row.id,
     title:         row.title,
@@ -63,6 +63,37 @@ export async function fetchCampaignById(id: string): Promise<Campaign | null> {
     })),
 
   }
+}
+
+export async function fetchMyCampaignById(profileId: string): Promise<Campaign[]> {
+  const rows: CampaignDB[] = await campaignRepo.findMyCampaignById(profileId) ?? []
+
+  return rows.map(r => ({
+    id:            r.id,
+    title:         r.title,
+    description:   r.description,
+    imageUrl:      r.image_url,
+    budget:        Number(r.budget),
+    paid:          Number(r.paid),
+    reward:        r.reward,
+    typeId:        r.type_id,
+    socialMediaId: r.socialmedia_id,
+    requirements:  r.requirements ? JSON.parse(r.requirements) : [],
+    categoryId:    r.category_id,
+    files:         r.files ?? [],
+    status:        r.status_id,
+    creationDate:  new Date(r.creation_date),
+    startDate:     new Date(r.start_date),
+    endDate:       new Date(r.end_date),
+    authorId:      r.author.id,
+    authorName:    r.author.name,
+    authorAvatar:  r.author.avatar_url,
+    maxPayment:    r.max_payment,
+    participants:  (r.participants ?? []).map(p => ({
+      postLink: p.post_link,
+      views:    p.views,
+    })),
+  }))
 }
 
 export async function participateInCampaign(params: {
