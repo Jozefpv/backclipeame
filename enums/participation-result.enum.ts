@@ -1,5 +1,5 @@
 export enum ParticipationResult {
-  CREATED              = 'CREATED',
-  ALREADY_PARTICIPATED = 'ALREADY_PARTICIPATED',
-  ERROR                = 'ERROR',
+  CREATED = "CREATED",
+  ALREADY_PARTICIPATED = "ALREADY_PARTICIPATED",
+  ERROR = "ERROR",
 }

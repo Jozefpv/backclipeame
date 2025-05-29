@@ -1,4 +1,4 @@
 export interface CampaignParticipantsDB {
-    post_link: string,
-    views: number
+  post_link: string;
+  views: number;
 }

@@ -1,9 +1,8 @@
-import { Router } from 'express'
-import { scrapTiktok } from '../../controllers/scrap.controller.js'
+import { Router } from "express";
+import { scrapTiktok } from "../../controllers/scrap.controller.js";
 
+const router = Router();
 
-const router = Router()
+router.get("/tiktok", scrapTiktok);
 
-router.get('/tiktok' , scrapTiktok)
-
-export default router
+export default router;
