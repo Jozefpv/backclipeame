@@ -52,7 +52,7 @@ router.get("/google/callback", async (req: any, res: any) => {
     res.cookie("sb-access-token", session.access_token, {
       httpOnly: true,
       secure: true,
-      sameSite: "lax",
+      sameSite: "none",
     });
 
     res.redirect(`${process.env.FRONTEND_URL}/clipeame`);
@@ -110,7 +110,7 @@ router.post("/login", async (req, res) => {
     res.cookie("sb-access-token", session.access_token, {
       httpOnly: true,
       secure: true,
-      sameSite: "lax",
+      sameSite: "none",
     });
     res.json({ user, verify: true });
   } catch (err: any) {
