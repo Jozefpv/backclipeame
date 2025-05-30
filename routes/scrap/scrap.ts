@@ -3,6 +3,6 @@ import { scrapTiktok } from "../../controllers/scrap.controller.js";
 
 const router = Router();
 
-router.get("/tiktok", scrapTiktok);
+router.post("/tiktok", scrapTiktok);
 
 export default router;

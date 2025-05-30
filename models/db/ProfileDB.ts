@@ -7,4 +7,5 @@ export interface ProfileDB {
   created_at: Date;
   phone: number;
   campaings: string[];
+  rol: number;
 }

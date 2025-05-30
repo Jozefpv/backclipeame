@@ -7,4 +7,5 @@ export interface Profile {
   createdAt: Date;
   phone: number;
   campaings: string[];
+  rol: number;
 }

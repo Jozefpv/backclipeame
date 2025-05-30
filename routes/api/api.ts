@@ -7,3 +7,7 @@ router.get("/check-auth", requireUserAuth, (req: any, res: any) => {
 });
 
 export default router;
+
+router.get("/refresh", (req: any, res: any) => {
+  res.status(200).json({ message: "done" });
+});

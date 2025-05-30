@@ -1,8 +1,7 @@
-import * as scrapRepo from '../repositories/scrap.repository.js'
+import * as scrapRepo from "../repositories/scrap.repository.js";
 
+export async function scrapTiktok(campaignId: string): Promise<boolean> {
+  const updated = (await scrapRepo.scrapAndSaveTikTokData(campaignId)) ?? false;
 
-export async function scrapTiktok(): Promise<boolean> {
-  const test = await scrapRepo.scrapAndSaveTikTokData() ?? false
-
-  return !!test
+  return updated;
 }
