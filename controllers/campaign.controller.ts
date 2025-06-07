@@ -141,8 +141,8 @@ export async function addCampaign(req: any, res: any) {
         },
       ],
       metadata: { campaign_id: newCampaign.id },
-      success_url: `${process.env.FRONTEND_URL}/clipeame/dashboard?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${process.env.FRONTEND_URL}/clipeame/dashboard?canceled=true`,
+      success_url: `${process.env.FRONTEND_URL}/clipeame`,
+      cancel_url: `${process.env.FRONTEND_URL}/clipeame/error`,
     });
 
     return res.status(201).json({
