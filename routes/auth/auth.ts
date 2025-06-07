@@ -55,7 +55,7 @@ router.get("/google/callback", async (req: any, res: any) => {
       sameSite: "none",
     });
 
-    res.redirect(`${process.env.FRONTEND_URL}/`);
+    res.redirect(`${process.env.FRONTEND_URL}/clipeame`);
   } catch (err: any) {
     console.error("Error en OAuth callback:", err);
     res.redirect(

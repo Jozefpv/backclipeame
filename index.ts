@@ -7,7 +7,6 @@ import authRouter from "./routes/auth/auth.js";
 import apiRouter from "./routes/api/api.js";
 import dashboardRotuer from "./routes/dashboard/dashboard.js";
 import scrapRouter from "./routes/scrap/scrap.js";
-import paymentRouter from "./routes/payment/payment.js";
 
 const app = express();
 
@@ -24,7 +23,6 @@ app.use("/auth", authRouter);
 app.use("/api", apiRouter);
 app.use("/dashboard", dashboardRotuer);
 app.use("/scrap", scrapRouter);
-app.use("/payment", paymentRouter);
 
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {

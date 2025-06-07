@@ -1,4 +1,5 @@
 import supabase from "../db/db.js";
+import { Campaign } from "../models/Campaign.js";
 import { ParticipationDB } from "../models/db/ParticipationDB.js";
 export async function findAll() {
   const { data, error } = await supabase
@@ -122,7 +123,7 @@ export async function insertParticipation(data: {
   return inserted!;
 }
 
-export async function addCampaign(data: any) {
+export async function addCampaign(data: any): Promise<Campaign> {
   const {
     imageFile,
     title,
@@ -158,7 +159,7 @@ export async function addCampaign(data: any) {
     data: { publicUrl },
   } = supabase.storage.from("campaign-images").getPublicUrl(filePath);
 
-  const { data: created, error: insertError } = await supabase
+  const insert = await supabase
     .from("campaigns")
     .insert([
       {
@@ -180,12 +181,12 @@ export async function addCampaign(data: any) {
         author_id: authorId,
       },
     ])
+    .select()
     .single();
 
-  if (insertError) {
-    console.error("DB insert error:", insertError);
-    throw insertError;
+  if (insert.error) {
+    console.error("DB insert error:", insert.error);
+    throw insert.error;
   }
-
-  return created;
+  return insert.data;
 }

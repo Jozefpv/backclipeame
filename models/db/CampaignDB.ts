@@ -27,4 +27,5 @@ export interface CampaignDB {
   content_category_name: { name: string };
   max_payment: number;
   participants: CampaignParticipantsDB[];
+  payment_status?: number;
 }

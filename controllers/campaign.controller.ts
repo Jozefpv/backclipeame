@@ -1,6 +1,7 @@
 import { ParticipationResult } from "../enums/participation-result.enum.js";
 import { Campaign } from "../models/Campaign.js";
 import * as campaignService from "../services/campaign.service.js";
+import { stripe } from "../stripe/stripe.js";
 
 export async function getCampaigns(req: any, res: any) {
   try {
@@ -122,10 +123,65 @@ export async function addCampaign(req: any, res: any) {
       imageFile,
     });
 
-    return res.status(201).json({ campaign: newCampaign });
+    const session = await stripe.checkout.sessions.create({
+      payment_method_types: ["card"],
+      mode: "payment",
+      line_items: [
+        {
+          price_data: {
+            currency: "eur",
+            unit_amount: Math.round(Number(budget) * 100),
+            product_data: {
+              name: title,
+              description,
+              metadata: { campaign_id: newCampaign.id },
+            },
+          },
+          quantity: 1,
+        },
+      ],
+      metadata: { campaign_id: newCampaign.id },
+      success_url: `http://localhost:5173/dashboard?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `http://localhost:5173/dashboard?canceled=true`,
+    });
+
+    return res.status(201).json({
+      campaign: newCampaign,
+      checkoutUrl: session.url,
+    });
   } catch (err: any) {
     return res
       .status(500)
       .json({ error: "Error interno al crear campaña", details: err.message });
   }
 }
+
+export const createSession = async (req: any, res: any) => {
+  try {
+    const session = await stripe.checkout.sessions.create({
+      mode: "payment",
+      line_items: [
+        {
+          price_data: {
+            currency: "eur",
+            unit_amount: 1000,
+            product_data: {
+              name: "Campaña #1",
+              description: "Descripción de la campaña…",
+              metadata: {
+                campaign_id: "1",
+              },
+            },
+          },
+          quantity: 1,
+        },
+      ],
+      success_url: "http://localhost:5173/dashboard?status=success",
+      cancel_url: "http://localhost:5173/dashboard?status=cancel",
+    });
+    res.json({ url: session.url });
+  } catch (err) {
+    console.error(err);
+    res.status(500);
+  }
+};

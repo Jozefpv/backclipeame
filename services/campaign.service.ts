@@ -123,6 +123,6 @@ export async function participateInCampaign(params: {
   }
 }
 
-export async function createCampaign(input: any) {
+export async function createCampaign(input: any): Promise<Campaign> {
   return await campaignRepo.addCampaign(input);
 }
