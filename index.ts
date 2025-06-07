@@ -22,7 +22,7 @@ app.use(
 
 const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET!;
 
-app.post("api/stripe/webhook", async (req: any, res: any) => {
+app.post("/stripe/webhook", async (req: any, res: any) => {
   const signature = req.headers["stripe-signature"] as string;
 
   let event: Stripe.Event;
